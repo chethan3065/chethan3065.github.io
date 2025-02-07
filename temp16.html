@@ -6,6 +6,40 @@
     <title>Document</title>
     <script>
         let users = [];
+        let useremail = ""
+        let username2 = ""
+        let curBalance = 0
+        function saveData() {
+            let amount = Number(document.getElementById("amount").value)
+            let type = document.getElementById("type").value
+            for (let i = 0; i<users.length; i++) {
+                if(users[i].username == username2) {
+                    if(type == "1") { 
+                        users[i].balance += amount
+                    }
+                    else if(type == "2"){
+                        users[i].balance -= amount
+                    }
+                    spBalance.innerHTML = users[i].balance
+                    break;
+                }
+            }
+        }
+        function home() {
+            let str = `
+                <h2> Welcome ${username2}</h2>
+                <button onclick = "showLogin()"> Log out </button>
+                <p><input type = "number" id = "amount" placeholder = "Enter Amount"></p>
+                <p><select id = "type">
+                    <option value = 0> --Select-- </option>
+                    <option value = 1> Deposit </option>
+                    <option value = 2> Withdraw </option> 
+                    </select> </p>
+                    <button onclick = "saveData()"> Submit </button>
+                    <p> Current Balance : <span id = "spBalance">${curBalance}</span></p>
+                `
+            root.innerHTML = str 
+        }
         function addUser() {
             let fname = document.getElementById("fname").value 
             let lname = document.getElementById("lname").value
@@ -21,7 +55,8 @@
                 email:email,
                 curpass:curpass,
                 conpass:conpass,
-                dob:dob
+                dob:dob,
+                balance:0
             }
             users.push(user);
             showLogin();
@@ -47,7 +82,7 @@
             <div>
                 <h2> Login Form </h2>
                 <div id = "msg"></div>
-                <p><input type = "text" id = "username" placeholder = "Username"></p>
+                <p><input type = "text" id = "username" id = "email" placeholder = "Username"></p>
                 <p><input type = "password" id = "password" placeholder = "Password"></p>
                 <button onclick = "chkUser()"> LogIn </button> 
                 <p><button onclick = "Register()"> Create Account </button></p>
@@ -57,20 +92,29 @@
         }
         function chkUser() {
             let username = document.getElementById("username").value
+            let email = document.getElementById("email").value
             let password = document.getElementById("password").value
             for(let i=0; i<users.length; i++){
-                if(users[i].username == username && users[i].curpass == password) {
-                    let str = `
-                    <h2> Welcome </h2>
-                    <button onclick = "showLogin()"> Log out </button>
-                    `
-                    root.innerHTML = str
+                if((users[i].username == username || users[i].email == email) && users[i].curpass == password) {
+                    // let str = `
+                    // <h2> Welcome </h2>
+                    // <button onclick = "showLogin()"> Log out </button>
+                    // `
+                    // root.innerHTML = str
+                    useremail = email
+                    username = username
+                    curBalance = users[i].balance
+                    home()
+                    break;
                 }
-                else if(users[i].username != username && users[i].curpass != password) {
-                    msg.innerHTML = "User doesn't exist"
-                }
+                // else if(users[i].username != username && users[i].curpass != password) {
+                //     msg.innerHTML = "User doesn't exist"
+                // }
+                // else {
+                //     msg.innerHTML = "Invalid username or password"
+                // }
                 else {
-                    msg.innerHTML = "Invalid username or password"
+                    msg.innerHTML = "Access Denied"
                 }
             }
         }
@@ -78,9 +122,9 @@
 </head>
 <body onload = "showLogin()">
     <h1> SBI Bank</h1>
-    <hr/>
+    <hr>
     <div id = "root"></div>
-    <hr />
+    <hr>
     <h3> @Copyright 2005. All rights reserved.</h3>
 </body>
 </html>
