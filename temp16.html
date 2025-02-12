@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let users = [];
+        let useremail = ""
+        let username2 = ""
+        let curBalance = 0
+        function saveData() {
+            let amount = Number(document.getElementById("amount").value)
+            let type = document.getElementById("type").value
+            for (let i = 0; i<users.length; i++) {
+                if(users[i].username == username2) {
+                    if(type == "1") { 
+                        users[i].balance += amount
+                    }
+                    else if(type == "2"){
+                        users[i].balance -= amount
+                    }
+                    spBalance.innerHTML = users[i].balance
+                    break;
+                }
+            }
+        }
+        function home() {
+            let str = `
+                <h2> Welcome ${username2}</h2>
+                <button onclick = "showLogin()"> Log out </button>
+                <p><input type = "number" id = "amount" placeholder = "Enter Amount"></p>
+                <p><select id = "type">
+                    <option value = 0> --Select-- </option>
+                    <option value = 1> Deposit </option>
+                    <option value = 2> Withdraw </option> 
+                    </select> </p>
+                    <button onclick = "saveData()"> Submit </button>
+                    <p> Current Balance : <span id = "spBalance">${curBalance}</span></p>
+                `
+            root.innerHTML = str 
+        }
+        function addUser() {
+            let fname = document.getElementById("fname").value 
+            let lname = document.getElementById("lname").value
+            let username = document.getElementById("username").value
+            let email = document.getElementById("email").value
+            let curpass = document.getElementById("curpass").value
+            let conpass = document.getElementById("conpass").value
+            let dob = document.getElementById("dob").value
+            let user = {
+                fname:fname, 
+                lname:lname,
+                username:username,
+                email:email,
+                curpass:curpass,
+                conpass:conpass,
+                dob:dob,
+                balance:0
+            }
+            users.push(user);
+            showLogin();
+        }
+        function Register() { 
+            let str = `
+            <h2> Registration Form </h2>
+            <p><input type = "text" id = "fname" placeholder = "First Name"></p>
+            <p><input type = "text" id = "lname" placeholder = "Last Name"></p>
+            <p><input type = "text" id = "username" placeholder = "Username"></p>
+            <p><input type = "text" id = "email" placeholder = "Email"></p>
+            <p><input type = "password" id = "curpass" placeholder = "Create password"></p>
+            <p><input type = "password" id = "conpass" placeholder = "Confirm password"></p>
+            <p><input type = "date" id = "dob" placeholder = "Date of Birth"></p>
+            <p><button onclick = "addUser()"> Sign Up </button></p>
+            <p>Already a member? <button onclick = "showLogin()">LogIn</button></p>
+            `
+            root.innerHTML = str
+            
+        }
+        function showLogin() {
+            let str = `
+            <div>
+                <h2> Login Form </h2>
+                <div id = "msg"></div>
+                <p><input type = "text" id = "username" id = "email" placeholder = "Username"></p>
+                <p><input type = "password" id = "password" placeholder = "Password"></p>
+                <button onclick = "chkUser()"> LogIn </button> 
+                <p><button onclick = "Register()"> Create Account </button></p>
+            </div>
+            `
+            root.innerHTML = str
+        }
+        function chkUser() {
+            let username = document.getElementById("username").value
+            let email = document.getElementById("email").value
+            let password = document.getElementById("password").value
+            for(let i=0; i<users.length; i++){
+                if((users[i].username == username || users[i].email == email) && users[i].curpass == password) {
+                    // let str = `
+                    // <h2> Welcome </h2>
+                    // <button onclick = "showLogin()"> Log out </button>
+                    // `
+                    // root.innerHTML = str
+                    useremail = email
+                    username = username
+                    curBalance = users[i].balance
+                    home()
+                    break;
+                }
+                // else if(users[i].username != username && users[i].curpass != password) {
+                //     msg.innerHTML = "User doesn't exist"
+                // }
+                // else {
+                //     msg.innerHTML = "Invalid username or password"
+                // }
+                else {
+                    msg.innerHTML = "Access Denied"
+                }
+            }
+        }
+    </script>
+</head>
+<body onload = "showLogin()">
+    <h1> SBI Bank</h1>
+    <hr>
+    <div id = "root"></div>
+    <hr>
+    <h3> @Copyright 2005. All rights reserved.</h3>
+</body>
+</html>
