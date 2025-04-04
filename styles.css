@@ -59,7 +59,7 @@ h1{
     0%, 100% { content: "Full Stack Developer"; }
 }
 .typing::after {
-    animation: typing 8s steps(50) infinite alternate, blink 500s infinite, changeText 10s infinite;
+    animation: typing 8s steps(50) infinite alternate, blink 10s infinite, changeText 10s infinite;
 }
 #project{
     text-align: center;
